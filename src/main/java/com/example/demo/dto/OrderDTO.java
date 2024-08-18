@@ -15,9 +15,6 @@ import java.util.List;
 @EqualsAndHashCode
 public class OrderDTO {
 
-    private Long id;
-    private UserDTO user;
-    private LocalDateTime createdAt;
     private List<OrderItemDTO> orderItems;
 
 }

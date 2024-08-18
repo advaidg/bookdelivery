@@ -33,11 +33,6 @@ public class ErrorResponse {
     private HttpStatus status;
 
     /**
-     * The numerical representation of the HTTP status code.
-     */
-    private Integer statusCode;
-
-    /**
      * Additional details or error messages.
      */
     @JsonInclude(JsonInclude.Include.NON_NULL)

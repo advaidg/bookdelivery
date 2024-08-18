@@ -55,19 +55,26 @@ class StatisticsControllerTest extends BaseControllerTest {
         // Then
         CustomPageResponse<OrderReportResponse> customPageResponse = OrderReportMapper.toOrderReportResponseList(pageOfOrderReportDTOs);
         CustomResponse<CustomPageResponse<OrderReportResponse>> expectedResponse = CustomResponse.ok(customPageResponse);
+        String monthPath = "$.response.content[0].month";
+        String yearPath = "$.response.content[0].year";
+        String totalOrderCountPath = "$.response.content[0].totalOrderCount";
+        String totalBookCountPath = "$.response.content[0].totalBookCount";
+        String isSuccessPath = "$.isSuccess";
+        String httpStatusPath = "$.httpStatus";
+        String timePath = "$.time";
 
         mockMvc.perform(get("/api/v1/statistics/{customerId}", customerId)
                         .header(HttpHeaders.AUTHORIZATION, mockUserToken)
                         .content(objectMapper.writeValueAsString(paginationRequest))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.response.content[0].month").value(orderReportDTO.getMonth()))
-                .andExpect(jsonPath("$.response.content[0].year").value(orderReportDTO.getYear()))
-                .andExpect(jsonPath("$.response.content[0].totalOrderCount").value(orderReportDTO.getTotalOrderCount()))
-                .andExpect(jsonPath("$.response.content[0].totalBookCount").value(orderReportDTO.getTotalBookCount()))
-                .andExpect(jsonPath("$.isSuccess").value(expectedResponse.getIsSuccess()))
-                .andExpect(jsonPath("$.httpStatus").value(expectedResponse.getHttpStatus().name()))
-                .andExpect(jsonPath("$.time").isNotEmpty());
+                .andExpect(jsonPath(monthPath).value(orderReportDTO.getMonth()))
+                .andExpect(jsonPath(yearPath).value(orderReportDTO.getYear()))
+                .andExpect(jsonPath(totalOrderCountPath).value(orderReportDTO.getTotalOrderCount()))
+                .andExpect(jsonPath(totalBookCountPath).value(orderReportDTO.getTotalBookCount()))
+                .andExpect(jsonPath(isSuccessPath).value(expectedResponse.getIsSuccess()))
+                .andExpect(jsonPath(httpStatusPath).value(expectedResponse.getHttpStatus().name()))
+                .andExpect(jsonPath(timePath).isNotEmpty());
     }
 
     @Test
@@ -96,19 +103,26 @@ class StatisticsControllerTest extends BaseControllerTest {
         // Then
         CustomPageResponse<OrderReportResponse> customPageResponse = OrderReportMapper.toOrderReportResponseList(pageOfOrderReportDTOs);
         CustomResponse<CustomPageResponse<OrderReportResponse>> expectedResponse = CustomResponse.ok(customPageResponse);
+        String monthPath = "$.response.content[0].month";
+        String yearPath = "$.response.content[0].year";
+        String totalOrderCountPath = "$.response.content[0].totalOrderCount";
+        String totalBookCountPath = "$.response.content[0].totalBookCount";
+        String isSuccessPath = "$.isSuccess";
+        String httpStatusPath = "$.httpStatus";
+        String timePath = "$.time";
 
         mockMvc.perform(get("/api/v1/statistics/{customerId}", customerId)
                         .header(HttpHeaders.AUTHORIZATION, mockAdminToken)
                         .content(objectMapper.writeValueAsString(paginationRequest))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.response.content[0].month").value(orderReportDTO.getMonth()))
-                .andExpect(jsonPath("$.response.content[0].year").value(orderReportDTO.getYear()))
-                .andExpect(jsonPath("$.response.content[0].totalOrderCount").value(orderReportDTO.getTotalOrderCount()))
-                .andExpect(jsonPath("$.response.content[0].totalBookCount").value(orderReportDTO.getTotalBookCount()))
-                .andExpect(jsonPath("$.isSuccess").value(expectedResponse.getIsSuccess()))
-                .andExpect(jsonPath("$.httpStatus").value(expectedResponse.getHttpStatus().name()))
-                .andExpect(jsonPath("$.time").isNotEmpty());
+                .andExpect(jsonPath(monthPath).value(orderReportDTO.getMonth()))
+                .andExpect(jsonPath(yearPath).value(orderReportDTO.getYear()))
+                .andExpect(jsonPath(totalOrderCountPath).value(orderReportDTO.getTotalOrderCount()))
+                .andExpect(jsonPath(totalBookCountPath).value(orderReportDTO.getTotalBookCount()))
+                .andExpect(jsonPath(isSuccessPath).value(expectedResponse.getIsSuccess()))
+                .andExpect(jsonPath(httpStatusPath).value(expectedResponse.getHttpStatus().name()))
+                .andExpect(jsonPath(timePath).isNotEmpty());
     }
 
     @Test
@@ -135,18 +149,25 @@ class StatisticsControllerTest extends BaseControllerTest {
         // Then
         CustomPageResponse<OrderReportResponse> customPageResponse = OrderReportMapper.toOrderReportResponseList(pageOfOrderReportDTOs);
         CustomResponse<CustomPageResponse<OrderReportResponse>> expectedResponse = CustomResponse.ok(customPageResponse);
+        String monthPath = "$.response.content[0].month";
+        String yearPath = "$.response.content[0].year";
+        String totalOrderCountPath = "$.response.content[0].totalOrderCount";
+        String totalBookCountPath = "$.response.content[0].totalBookCount";
+        String isSuccessPath = "$.isSuccess";
+        String httpStatusPath = "$.httpStatus";
+        String timePath = "$.time";
 
         mockMvc.perform(get("/api/v1/statistics")
                         .header(HttpHeaders.AUTHORIZATION, mockAdminToken)
                         .content(objectMapper.writeValueAsString(paginationRequest))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.response.content[0].month").value(orderReportDTO.getMonth()))
-                .andExpect(jsonPath("$.response.content[0].year").value(orderReportDTO.getYear()))
-                .andExpect(jsonPath("$.response.content[0].totalOrderCount").value(orderReportDTO.getTotalOrderCount()))
-                .andExpect(jsonPath("$.response.content[0].totalBookCount").value(orderReportDTO.getTotalBookCount()))
-                .andExpect(jsonPath("$.isSuccess").value(expectedResponse.getIsSuccess()))
-                .andExpect(jsonPath("$.httpStatus").value(expectedResponse.getHttpStatus().name()))
-                .andExpect(jsonPath("$.time").isNotEmpty());
+                .andExpect(jsonPath(monthPath).value(orderReportDTO.getMonth()))
+                .andExpect(jsonPath(yearPath).value(orderReportDTO.getYear()))
+                .andExpect(jsonPath(totalOrderCountPath).value(orderReportDTO.getTotalOrderCount()))
+                .andExpect(jsonPath(totalBookCountPath).value(orderReportDTO.getTotalBookCount()))
+                .andExpect(jsonPath(isSuccessPath).value(expectedResponse.getIsSuccess()))
+                .andExpect(jsonPath(httpStatusPath).value(expectedResponse.getHttpStatus().name()))
+                .andExpect(jsonPath(timePath).isNotEmpty());
     }
 }

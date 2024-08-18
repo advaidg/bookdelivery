@@ -8,6 +8,9 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class BeanScope {
 
+    private BeanScope() {
+    }
+
     public static final String SCOPE_REQUEST = "request";
 
 }

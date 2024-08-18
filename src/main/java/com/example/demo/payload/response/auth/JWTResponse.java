@@ -18,7 +18,5 @@ public class JWTResponse {
 
     @Builder.Default
     private String type = "Bearer";
-    private String refreshToken;
-    private String email;
 
 }

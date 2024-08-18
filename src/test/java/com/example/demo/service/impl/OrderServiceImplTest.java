@@ -180,7 +180,7 @@ class OrderServiceImplTest extends BaseServiceTest {
                 .thenReturn(new PageImpl<>(Collections.singletonList(mockOrder)));
 
         // Then
-        Page<OrderDTO> result = orderService.findAllOrdersBetweenTwoDatesAndPagination(
+        Page<OrderDTO> result = orderService.findAllOrdersBetweenDatesAndPagination(
                 new PaginatedFindAllRequest(dateIntervalRequest, paginationRequest));
         assertNotNull(result);
         assertEquals(1, result.getTotalElements());

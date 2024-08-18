@@ -15,7 +15,7 @@ public abstract class BaseBuilder<T> {
      * @param clazz the class of type T
      */
     @SneakyThrows
-    public BaseBuilder(Class<T> clazz) {
+    protected BaseBuilder(Class<T> clazz) {
         this.data = clazz.getDeclaredConstructor().newInstance();
     }
 

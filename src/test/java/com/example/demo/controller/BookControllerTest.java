@@ -34,6 +34,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 class BookControllerTest extends BaseControllerTest {
 
+    private static final String RESPONSE_ID = "$.response.id";
+    private static final String RESPONSE_ISBN = "$.response.isbn";
+    private static final String RESPONSE_NAME = "$.response.name";
+    private static final String RESPONSE_AUTHOR_FULL_NAME = "$.response.authorFullName";
+    private static final String RESPONSE_STOCK = "$.response.stock";
+    private static final String IS_SUCCESS = "$.isSuccess";
+    private static final String HTTP_STATUS = "$.httpStatus";
+    private static final String TIME = "$.time";
+
     @MockBean
     private BookServiceImpl bookService;
 
@@ -65,14 +74,14 @@ class BookControllerTest extends BaseControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(mockRequest)))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.response.id").value(bookCreatedResponse.getId()))
-                .andExpect(jsonPath("$.response.isbn").value(bookCreatedResponse.getIsbn()))
-                .andExpect(jsonPath("$.response.name").value(bookCreatedResponse.getName()))
-                .andExpect(jsonPath("$.response.authorFullName").value(bookCreatedResponse.getAuthorFullName()))
-                .andExpect(jsonPath("$.response.stock").value(bookCreatedResponse.getStock()))
-                .andExpect(jsonPath("$.isSuccess").value(customResponseOfBookCreatedResponse.getIsSuccess()))
-                .andExpect(jsonPath("$.httpStatus").value(customResponseOfBookCreatedResponse.getHttpStatus().name()))
-                .andExpect(jsonPath("$.time").isNotEmpty());
+                .andExpect(jsonPath(RESPONSE_ID).value(bookCreatedResponse.getId()))
+                .andExpect(jsonPath(RESPONSE_ISBN).value(bookCreatedResponse.getIsbn()))
+                .andExpect(jsonPath(RESPONSE_NAME).value(bookCreatedResponse.getName()))
+                .andExpect(jsonPath(RESPONSE_AUTHOR_FULL_NAME).value(bookCreatedResponse.getAuthorFullName()))
+                .andExpect(jsonPath(RESPONSE_STOCK).value(bookCreatedResponse.getStock()))
+                .andExpect(jsonPath(IS_SUCCESS).value(customResponseOfBookCreatedResponse.getIsSuccess()))
+                .andExpect(jsonPath(HTTP_STATUS).value(customResponseOfBookCreatedResponse.getHttpStatus().name()))
+                .andExpect(jsonPath(TIME).isNotEmpty());
     }
 
     @Test
@@ -96,14 +105,14 @@ class BookControllerTest extends BaseControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(bookGetResponse)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.response.id").value(bookGetResponse.getId()))
-                .andExpect(jsonPath("$.response.isbn").value(bookGetResponse.getIsbn()))
-                .andExpect(jsonPath("$.response.name").value(bookGetResponse.getName()))
-                .andExpect(jsonPath("$.response.authorFullName").value(bookGetResponse.getAuthorFullName()))
-                .andExpect(jsonPath("$.response.stock").value(bookGetResponse.getStock()))
-                .andExpect(jsonPath("$.isSuccess").value(customResponseOfBookGetResponse.getIsSuccess()))
-                .andExpect(jsonPath("$.httpStatus").value(customResponseOfBookGetResponse.getHttpStatus().getReasonPhrase()))
-                .andExpect(jsonPath("$.time").isNotEmpty());
+                .andExpect(jsonPath(RESPONSE_ID).value(bookGetResponse.getId()))
+                .andExpect(jsonPath(RESPONSE_ISBN).value(bookGetResponse.getIsbn()))
+                .andExpect(jsonPath(RESPONSE_NAME).value(bookGetResponse.getName()))
+                .andExpect(jsonPath(RESPONSE_AUTHOR_FULL_NAME).value(bookGetResponse.getAuthorFullName()))
+                .andExpect(jsonPath(RESPONSE_STOCK).value(bookGetResponse.getStock()))
+                .andExpect(jsonPath(IS_SUCCESS).value(customResponseOfBookGetResponse.getIsSuccess()))
+                .andExpect(jsonPath(HTTP_STATUS).value(customResponseOfBookGetResponse.getHttpStatus().getReasonPhrase()))
+                .andExpect(jsonPath(TIME).isNotEmpty());
 
     }
 
@@ -128,14 +137,14 @@ class BookControllerTest extends BaseControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(bookGetResponse)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.response.id").value(bookGetResponse.getId()))
-                .andExpect(jsonPath("$.response.isbn").value(bookGetResponse.getIsbn()))
-                .andExpect(jsonPath("$.response.name").value(bookGetResponse.getName()))
-                .andExpect(jsonPath("$.response.authorFullName").value(bookGetResponse.getAuthorFullName()))
-                .andExpect(jsonPath("$.response.stock").value(bookGetResponse.getStock()))
-                .andExpect(jsonPath("$.isSuccess").value(customResponseOfBookGetResponse.getIsSuccess()))
-                .andExpect(jsonPath("$.httpStatus").value(customResponseOfBookGetResponse.getHttpStatus().getReasonPhrase()))
-                .andExpect(jsonPath("$.time").isNotEmpty());
+                .andExpect(jsonPath(RESPONSE_ID).value(bookGetResponse.getId()))
+                .andExpect(jsonPath(RESPONSE_ISBN).value(bookGetResponse.getIsbn()))
+                .andExpect(jsonPath(RESPONSE_NAME).value(bookGetResponse.getName()))
+                .andExpect(jsonPath(RESPONSE_AUTHOR_FULL_NAME).value(bookGetResponse.getAuthorFullName()))
+                .andExpect(jsonPath(RESPONSE_STOCK).value(bookGetResponse.getStock()))
+                .andExpect(jsonPath(IS_SUCCESS).value(customResponseOfBookGetResponse.getIsSuccess()))
+                .andExpect(jsonPath(HTTP_STATUS).value(customResponseOfBookGetResponse.getHttpStatus().getReasonPhrase()))
+                .andExpect(jsonPath(TIME).isNotEmpty());
 
     }
 
@@ -171,9 +180,9 @@ class BookControllerTest extends BaseControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.response.content[0].id").value(bookId1))
                 .andExpect(jsonPath("$.response.content[1].id").value(bookId2))
-                .andExpect(jsonPath("$.isSuccess").value(response.getIsSuccess()))
-                .andExpect(jsonPath("$.httpStatus").value(response.getHttpStatus().getReasonPhrase()))
-                .andExpect(jsonPath("$.time").isNotEmpty());
+                .andExpect(jsonPath(IS_SUCCESS).value(response.getIsSuccess()))
+                .andExpect(jsonPath(HTTP_STATUS).value(response.getHttpStatus().getReasonPhrase()))
+                .andExpect(jsonPath(TIME).isNotEmpty());
 
     }
 
@@ -209,9 +218,9 @@ class BookControllerTest extends BaseControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.response.content[0].id").value(bookId1))
                 .andExpect(jsonPath("$.response.content[1].id").value(bookId2))
-                .andExpect(jsonPath("$.isSuccess").value(response.getIsSuccess()))
-                .andExpect(jsonPath("$.httpStatus").value(response.getHttpStatus().getReasonPhrase()))
-                .andExpect(jsonPath("$.time").isNotEmpty());
+                .andExpect(jsonPath(IS_SUCCESS).value(response.getIsSuccess()))
+                .andExpect(jsonPath(HTTP_STATUS).value(response.getHttpStatus().getReasonPhrase()))
+                .andExpect(jsonPath(TIME).isNotEmpty());
 
     }
 
@@ -244,14 +253,14 @@ class BookControllerTest extends BaseControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(bookUpdateStockRequest)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.response.id").value(bookUpdatedResponse.getId()))
-                .andExpect(jsonPath("$.response.isbn").value(bookUpdatedResponse.getIsbn()))
-                .andExpect(jsonPath("$.response.name").value(bookUpdatedResponse.getName()))
-                .andExpect(jsonPath("$.response.authorFullName").value(bookUpdatedResponse.getAuthorFullName()))
-                .andExpect(jsonPath("$.response.stock").value(bookUpdatedResponse.getStock()))
-                .andExpect(jsonPath("$.isSuccess").value(customResponseOfBookUpdatedResponse.getIsSuccess()))
-                .andExpect(jsonPath("$.httpStatus").value(customResponseOfBookUpdatedResponse.getHttpStatus().getReasonPhrase()))
-                .andExpect(jsonPath("$.time").isNotEmpty());
+                .andExpect(jsonPath(RESPONSE_ID).value(bookUpdatedResponse.getId()))
+                .andExpect(jsonPath(RESPONSE_ISBN).value(bookUpdatedResponse.getIsbn()))
+                .andExpect(jsonPath(RESPONSE_NAME).value(bookUpdatedResponse.getName()))
+                .andExpect(jsonPath(RESPONSE_AUTHOR_FULL_NAME).value(bookUpdatedResponse.getAuthorFullName()))
+                .andExpect(jsonPath(RESPONSE_STOCK).value(bookUpdatedResponse.getStock()))
+                .andExpect(jsonPath(IS_SUCCESS).value(customResponseOfBookUpdatedResponse.getIsSuccess()))
+                .andExpect(jsonPath(HTTP_STATUS).value(customResponseOfBookUpdatedResponse.getHttpStatus().getReasonPhrase()))
+                .andExpect(jsonPath(TIME).isNotEmpty());
 
     }
 
@@ -283,14 +292,14 @@ class BookControllerTest extends BaseControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(updateRequest)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.response.id").value(bookUpdatedResponse.getId()))
-                .andExpect(jsonPath("$.response.isbn").value(bookUpdatedResponse.getIsbn()))
-                .andExpect(jsonPath("$.response.name").value(bookUpdatedResponse.getName()))
-                .andExpect(jsonPath("$.response.authorFullName").value(bookUpdatedResponse.getAuthorFullName()))
-                .andExpect(jsonPath("$.response.stock").value(bookUpdatedResponse.getStock()))
-                .andExpect(jsonPath("$.isSuccess").value(customResponseOfBookUpdatedResponse.getIsSuccess()))
-                .andExpect(jsonPath("$.httpStatus").value(customResponseOfBookUpdatedResponse.getHttpStatus().getReasonPhrase()))
-                .andExpect(jsonPath("$.time").isNotEmpty());
+                .andExpect(jsonPath(RESPONSE_ID).value(bookUpdatedResponse.getId()))
+                .andExpect(jsonPath(RESPONSE_ISBN).value(bookUpdatedResponse.getIsbn()))
+                .andExpect(jsonPath(RESPONSE_NAME).value(bookUpdatedResponse.getName()))
+                .andExpect(jsonPath(RESPONSE_AUTHOR_FULL_NAME).value(bookUpdatedResponse.getAuthorFullName()))
+                .andExpect(jsonPath(RESPONSE_STOCK).value(bookUpdatedResponse.getStock()))
+                .andExpect(jsonPath(IS_SUCCESS).value(customResponseOfBookUpdatedResponse.getIsSuccess()))
+                .andExpect(jsonPath(HTTP_STATUS).value(customResponseOfBookUpdatedResponse.getHttpStatus().getReasonPhrase()))
+                .andExpect(jsonPath(TIME).isNotEmpty());
     }
 
 }

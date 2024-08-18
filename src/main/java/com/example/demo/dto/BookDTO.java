@@ -14,10 +14,5 @@ import java.math.BigDecimal;
 @EqualsAndHashCode
 public class BookDTO {
 
-    private String id;
-    private String isbn;
-    private String name;
-    private String authorFullName;
-    private BigDecimal price;
-    private Integer stock;
+    
 }

@@ -18,6 +18,9 @@ import org.springframework.data.domain.Page;
 @UtilityClass
 public class OrderMapper {
 
+    private OrderMapper() {
+    }
+
     /**
      * Converts an {@link Order} object to an {@link OrderDTO}.
      *

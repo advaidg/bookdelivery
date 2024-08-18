@@ -231,10 +231,11 @@ class BookServiceImplTest extends BaseServiceTest {
     void givenBookUpdateRequest_WhenBookFound_ReturnUpdatedBook() {
         // Given
         String bookId = "123";
+        String UPDATED_AUTHOR = "Updated Author";
         BookUpdateRequest updateRequest = BookUpdateRequest.builder()
                 .isbn("ISBN1234567")
-                .name("Updated Author")
-                .authorFullName("Updated Author")
+                .name(UPDATED_AUTHOR)
+                .authorFullName(UPDATED_AUTHOR)
                 .stock(10)
                 .price(BigDecimal.valueOf(19.99))
                 .build();

@@ -48,15 +48,27 @@ class AuthServiceImplTest extends BaseServiceTest {
     @Mock
     private PasswordEncoder passwordEncoder;
 
+    private static final String SUCCESS = "success";
+    private static final String MOCKED_TOKEN = "mockedToken";
+    private static final String ACTUAL_REFRESH_TOKEN = "actualRefreshToken";
+    private static final String VALID_REFRESH_TOKEN = "validRefreshToken";
+    private static final String NEW_MOCKED_TOKEN = "newMockedToken";
+    private static final String INVALID_AUTH_TOKEN = "invalidAuthToken";
+    private static final String FAILED = "failed";
+    private static final String ADMIN_PASSWORD = "admin_password";
+    private static final String ADMIN_EMAIL = "admin@bookdelivery.com";
+    private static final String CUSTOMER_PASSWORD = "customer_password";
+    private static final String CUSTOMER_EMAIL = "customer@bookdelivery.com";
+
     @Test
     void givenSignUpRequest_WhenCustomerRole_ReturnSuccess() {
 
         // given
         SignupRequest request = SignupRequest.builder()
                 .fullName("customer_fullname")
-                .password("customer_password")
+                .password(CUSTOMER_PASSWORD)
                 .username("customer_1")
-                .email("customer@bookdelivery.com")
+                .email(CUSTOMER_EMAIL)
                 .role(Role.ROLE_CUSTOMER)
                 .build();
 
@@ -75,7 +87,7 @@ class AuthServiceImplTest extends BaseServiceTest {
         // then
         String result = authService.register(request);
 
-        assertEquals("success", result);
+        assertEquals(SUCCESS, result);
         verify(userRepository).save(any(User.class));
     }
 
@@ -85,9 +97,9 @@ class AuthServiceImplTest extends BaseServiceTest {
         // given
         SignupRequest request = SignupRequest.builder()
                 .fullName("customer_fullname")
-                .password("customer_password")
+                .password(CUSTOMER_PASSWORD)
                 .username("customer_1")
-                .email("customer@bookdelivery.com")
+                .email(CUSTOMER_EMAIL)
                 .role(Role.ROLE_CUSTOMER)
                 .build();
 
@@ -104,8 +116,8 @@ class AuthServiceImplTest extends BaseServiceTest {
 
         // given
         LoginRequest request = LoginRequest.builder()
-                .email("customer@bookdelivery.com")
-                .password("customer_password")
+                .email(CUSTOMER_EMAIL)
+                .password(CUSTOMER_PASSWORD)
                 .build();
 
         User mockUser = User.builder()
@@ -122,18 +134,18 @@ class AuthServiceImplTest extends BaseServiceTest {
         // when
         when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
                 .thenReturn(mockAuthentication);
-        when(jwtUtils.generateJwtToken(mockAuthentication)).thenReturn("mockedToken");
+        when(jwtUtils.generateJwtToken(mockAuthentication)).thenReturn(MOCKED_TOKEN);
         when(userRepository.findByEmail(request.getEmail())).thenReturn(Optional.of(mockUser));
         when(refreshTokenService.createRefreshToken(any(User.class)))
-                .thenReturn("actualRefreshToken");
+                .thenReturn(ACTUAL_REFRESH_TOKEN);
 
         // then
         JWTResponse jwtResponse = authService.login(request);
 
         assertNotNull(jwtResponse);
         assertEquals(request.getEmail(), jwtResponse.getEmail());
-        assertEquals("mockedToken", jwtResponse.getToken());
-        assertEquals("actualRefreshToken", jwtResponse.getRefreshToken());
+        assertEquals(MOCKED_TOKEN, jwtResponse.getToken());
+        assertEquals(ACTUAL_REFRESH_TOKEN, jwtResponse.getRefreshToken());
 
     }
 
@@ -142,8 +154,8 @@ class AuthServiceImplTest extends BaseServiceTest {
 
         // given
         LoginRequest request = LoginRequest.builder()
-                .email("customer@bookdelivery.com")
-                .password("customer_password")
+                .email(CUSTOMER_EMAIL)
+                .password(CUSTOMER_PASSWORD)
                 .build();
 
         // when
@@ -160,11 +172,11 @@ class AuthServiceImplTest extends BaseServiceTest {
 
         // given
         TokenRefreshRequest request = TokenRefreshRequest.builder()
-                .refreshToken("validRefreshToken")
+                .refreshToken(VALID_REFRESH_TOKEN)
                 .build();
 
         RefreshToken refreshToken = RefreshToken.builder()
-                .token("validRefreshToken")
+                .token(VALID_REFRESH_TOKEN)
                 .user(User.builder().id(1L).build())
                 .build();
 
@@ -172,13 +184,13 @@ class AuthServiceImplTest extends BaseServiceTest {
         when(refreshTokenService.findByToken(request.getRefreshToken()))
                 .thenReturn(Optional.of(refreshToken));
         when(refreshTokenService.isRefreshExpired(refreshToken)).thenReturn(false);
-        when(jwtUtils.generateJwtToken(any(CustomUserDetails.class))).thenReturn("newMockedToken");
+        when(jwtUtils.generateJwtToken(any(CustomUserDetails.class))).thenReturn(NEW_MOCKED_TOKEN);
 
         TokenRefreshResponse tokenRefreshResponse = authService.refreshToken(request);
 
         assertNotNull(tokenRefreshResponse);
-        assertEquals("newMockedToken", tokenRefreshResponse.getAccessToken());
-        assertEquals("validRefreshToken", tokenRefreshResponse.getRefreshToken());
+        assertEquals(NEW_MOCKED_TOKEN, tokenRefreshResponse.getAccessToken());
+        assertEquals(VALID_REFRESH_TOKEN, tokenRefreshResponse.getRefreshToken());
 
     }
 
@@ -207,7 +219,7 @@ class AuthServiceImplTest extends BaseServiceTest {
                 .build();
 
         RefreshToken refreshToken = RefreshToken.builder()
-                .token("validRefreshToken")
+                .token(VALID_REFRESH_TOKEN)
                 .user(User.builder().id(1L).build())
                 .build();
 
@@ -237,14 +249,14 @@ class AuthServiceImplTest extends BaseServiceTest {
         // Then
         String result = authService.logout(token);
 
-        assertEquals("success", result);
+        assertEquals(SUCCESS, result);
         verify(refreshTokenService).deleteByUserId(userId);
     }
 
     @Test
     void givenInvalidAccessToken_WhenCustomerRole_ReturnLogoutFailed() {
         // Given
-        String token = "invalidAuthToken";
+        String token = INVALID_AUTH_TOKEN;
 
         when(jwtUtils.extractTokenFromHeader(token)).thenReturn(null); // Invalid token
 
@@ -252,14 +264,14 @@ class AuthServiceImplTest extends BaseServiceTest {
         String result = authService.logout(token);
 
         // Then
-        assertEquals("failed", result);
+        assertEquals(FAILED, result);
         verify(refreshTokenService, never()).deleteByUserId(anyLong());
     }
 
     @Test
     void givenInvalidAccessToken_WhenCustomerRole_ReturnLogoutInvalidJwtToken() {
         // Given
-        String token = "invalidAuthToken";
+        String token = INVALID_AUTH_TOKEN;
 
         when(jwtUtils.extractTokenFromHeader(token)).thenReturn(token);
         when(jwtUtils.validateJwtToken(token)).thenReturn(false);
@@ -268,7 +280,7 @@ class AuthServiceImplTest extends BaseServiceTest {
         String result = authService.logout(token);
 
         // Then
-        assertEquals("failed", result);
+        assertEquals(FAILED, result);
         verify(refreshTokenService, never()).deleteByUserId(anyLong());
 
     }
@@ -279,9 +291,9 @@ class AuthServiceImplTest extends BaseServiceTest {
         // given
         SignupRequest request = SignupRequest.builder()
                 .fullName("admin_fullname")
-                .password("admin_password")
+                .password(ADMIN_PASSWORD)
                 .username("admin_1")
-                .email("admin@bookdelivery.com")
+                .email(ADMIN_EMAIL)
                 .role(Role.ROLE_ADMIN)
                 .build();
 
@@ -300,7 +312,7 @@ class AuthServiceImplTest extends BaseServiceTest {
         // then
         String result = authService.register(request);
 
-        assertEquals("success", result);
+        assertEquals(SUCCESS, result);
         verify(userRepository).save(any(User.class));
     }
 
@@ -310,9 +322,9 @@ class AuthServiceImplTest extends BaseServiceTest {
         // given
         SignupRequest request = SignupRequest.builder()
                 .fullName("admin_fullname")
-                .password("admin_password")
+                .password(ADMIN_PASSWORD)
                 .username("admin_1")
-                .email("admin@bookdelivery.com")
+                .email(ADMIN_EMAIL)
                 .role(Role.ROLE_ADMIN)
                 .build();
 
@@ -329,8 +341,8 @@ class AuthServiceImplTest extends BaseServiceTest {
 
         // given
         LoginRequest request = LoginRequest.builder()
-                .email("admin@bookdelivery.com")
-                .password("admin_password")
+                .email(ADMIN_EMAIL)
+                .password(ADMIN_PASSWORD)
                 .build();
 
         User mockUser = User.builder()
@@ -347,18 +359,18 @@ class AuthServiceImplTest extends BaseServiceTest {
         // when
         when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
                 .thenReturn(mockAuthentication);
-        when(jwtUtils.generateJwtToken(mockAuthentication)).thenReturn("mockedToken");
+        when(jwtUtils.generateJwtToken(mockAuthentication)).thenReturn(MOCKED_TOKEN);
         when(userRepository.findByEmail(request.getEmail())).thenReturn(Optional.of(mockUser));
         when(refreshTokenService.createRefreshToken(any(User.class)))
-                .thenReturn("actualRefreshToken");
+                .thenReturn(ACTUAL_REFRESH_TOKEN);
 
         // then
         JWTResponse jwtResponse = authService.login(request);
 
         assertNotNull(jwtResponse);
         assertEquals(request.getEmail(), jwtResponse.getEmail());
-        assertEquals("mockedToken", jwtResponse.getToken());
-        assertEquals("actualRefreshToken", jwtResponse.getRefreshToken());
+        assertEquals(MOCKED_TOKEN, jwtResponse.getToken());
+        assertEquals(ACTUAL_REFRESH_TOKEN, jwtResponse.getRefreshToken());
 
     }
 
@@ -367,8 +379,8 @@ class AuthServiceImplTest extends BaseServiceTest {
 
         // given
         LoginRequest request = LoginRequest.builder()
-                .email("admin@bookdelivery.com")
-                .password("admin_password")
+                .email(ADMIN_EMAIL)
+                .password(ADMIN_PASSWORD)
                 .build();
 
         // when
@@ -385,11 +397,11 @@ class AuthServiceImplTest extends BaseServiceTest {
 
         // given
         TokenRefreshRequest request = TokenRefreshRequest.builder()
-                .refreshToken("validRefreshToken")
+                .refreshToken(VALID_REFRESH_TOKEN)
                 .build();
 
         RefreshToken refreshToken = RefreshToken.builder()
-                .token("validRefreshToken")
+                .token(VALID_REFRESH_TOKEN)
                 .user(User.builder().id(1L).build())
                 .build();
 
@@ -397,13 +409,13 @@ class AuthServiceImplTest extends BaseServiceTest {
         when(refreshTokenService.findByToken(request.getRefreshToken()))
                 .thenReturn(Optional.of(refreshToken));
         when(refreshTokenService.isRefreshExpired(refreshToken)).thenReturn(false);
-        when(jwtUtils.generateJwtToken(any(CustomUserDetails.class))).thenReturn("newMockedToken");
+        when(jwtUtils.generateJwtToken(any(CustomUserDetails.class))).thenReturn(NEW_MOCKED_TOKEN);
 
         TokenRefreshResponse tokenRefreshResponse = authService.refreshToken(request);
 
         assertNotNull(tokenRefreshResponse);
-        assertEquals("newMockedToken", tokenRefreshResponse.getAccessToken());
-        assertEquals("validRefreshToken", tokenRefreshResponse.getRefreshToken());
+        assertEquals(NEW_MOCKED_TOKEN, tokenRefreshResponse.getAccessToken());
+        assertEquals(VALID_REFRESH_TOKEN, tokenRefreshResponse.getRefreshToken());
 
     }
 
@@ -432,7 +444,7 @@ class AuthServiceImplTest extends BaseServiceTest {
                 .build();
 
         RefreshToken refreshToken = RefreshToken.builder()
-                .token("validRefreshToken")
+                .token(VALID_REFRESH_TOKEN)
                 .user(User.builder().id(1L).build())
                 .build();
 
@@ -462,14 +474,14 @@ class AuthServiceImplTest extends BaseServiceTest {
         // Then
         String result = authService.logout(token);
 
-        assertEquals("success", result);
+        assertEquals(SUCCESS, result);
         verify(refreshTokenService).deleteByUserId(userId);
     }
 
     @Test
     void givenInvalidAccessToken_WhenAdminRole_ReturnLogoutFailed() {
         // Given
-        String token = "invalidAuthToken";
+        String token = INVALID_AUTH_TOKEN;
 
         when(jwtUtils.extractTokenFromHeader(token)).thenReturn(null); // Invalid token
 
@@ -477,14 +489,14 @@ class AuthServiceImplTest extends BaseServiceTest {
         String result = authService.logout(token);
 
         // Then
-        assertEquals("failed", result);
+        assertEquals(FAILED, result);
         verify(refreshTokenService, never()).deleteByUserId(anyLong());
     }
 
     @Test
     void givenInvalidAccessToken_WhenAdminRole_ReturnLogoutInvalidJwtToken() {
         // Given
-        String token = "invalidAuthToken";
+        String token = INVALID_AUTH_TOKEN;
 
         when(jwtUtils.extractTokenFromHeader(token)).thenReturn(token);
         when(jwtUtils.validateJwtToken(token)).thenReturn(false);
@@ -493,7 +505,7 @@ class AuthServiceImplTest extends BaseServiceTest {
         String result = authService.logout(token);
 
         // Then
-        assertEquals("failed", result);
+        assertEquals(FAILED, result);
         verify(refreshTokenService, never()).deleteByUserId(anyLong());
 
     }

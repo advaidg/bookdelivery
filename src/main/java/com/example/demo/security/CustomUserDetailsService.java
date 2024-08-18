@@ -31,7 +31,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         User user = null;
         try {
             user = userService.findByEmail(username)
-                    .orElseThrow(() -> new Exception("User Name " + username + " not found"));
+                    .orElseThrow(() -> new UsernameNotFoundException("User Name " + username + " not found"));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

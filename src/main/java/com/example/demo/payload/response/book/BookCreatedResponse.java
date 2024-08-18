@@ -13,10 +13,5 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BookCreatedResponse {
-    private String id;
-    private String isbn;
-    private String name;
-    private String authorFullName;
-    private Integer stock;
-    private BigDecimal price;
+
 }

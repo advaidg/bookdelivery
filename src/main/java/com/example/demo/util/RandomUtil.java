@@ -3,6 +3,7 @@ package com.example.demo.util;
 import lombok.experimental.UtilityClass;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.Random;
 import java.util.UUID;
 
@@ -54,6 +55,6 @@ public class RandomUtil {
 
         final int scale = 2;
         double randomDouble = min + (max - min) * random.nextDouble();
-        return new BigDecimal(randomDouble, new java.math.MathContext(scale));
+        return new BigDecimal(String.valueOf(randomDouble), new MathContext(scale));
     }
 }
