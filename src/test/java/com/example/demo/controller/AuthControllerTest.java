@@ -23,6 +23,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 class AuthControllerTest extends BaseControllerTest {
 
+    private static final String SUCCESS = "success";
+    private static final String ADMIN_FULLNAME = "admin_fullname";
+    private static final String ADMIN_1 = "admin_1";
+    private static final String ADMIN_EMAIL = "admin@bookdelivery.com";
+    private static final String BEARER = "Bearer ";
+    private static final String VALID_REFRESH_TOKEN = "validRefreshToken";
+    private static final String CUSTOMER_EMAIL = "customer@bookdelivery.com";
+    private static final String CUSTOMER_FULLNAME = "customer_fullname";
+    private static final String CUSTOMER_1 = "customer_1";
+
     @MockBean
     private AuthServiceImpl authService;
 
@@ -32,14 +42,14 @@ class AuthControllerTest extends BaseControllerTest {
 
         // given
         SignupRequest request = SignupRequest.builder()
-                .fullName("customer_fullname")
+                .fullName(CUSTOMER_FULLNAME)
                 .password("customer_password")
-                .username("customer_1")
-                .email("customer@bookdelivery.com")
+                .username(CUSTOMER_1)
+                .email(CUSTOMER_EMAIL)
                 .role(Role.ROLE_CUSTOMER)
                 .build();
 
-        when(authService.register(request)).thenReturn("success");
+        when(authService.register(request)).thenReturn(SUCCESS);
 
         mockMvc.perform(post("/api/v1/auth/register")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -53,14 +63,14 @@ class AuthControllerTest extends BaseControllerTest {
 
         // given
         SignupRequest request = SignupRequest.builder()
-                .fullName("admin_fullname")
+                .fullName(ADMIN_FULLNAME)
                 .password("admin_password")
-                .username("admin_1")
-                .email("admin@bookdelivery.com")
+                .username(ADMIN_1)
+                .email(ADMIN_EMAIL)
                 .role(Role.ROLE_ADMIN)
                 .build();
 
-        when(authService.register(request)).thenReturn("success");
+        when(authService.register(request)).thenReturn(SUCCESS);
 
         mockMvc.perform(post("/api/v1/auth/register")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -74,7 +84,7 @@ class AuthControllerTest extends BaseControllerTest {
 
         // given
         LoginRequest request = LoginRequest.builder()
-                .email("customer@bookdelivery.com")
+                .email(CUSTOMER_EMAIL)
                 .password("customer_password")
                 .build();
 
@@ -102,10 +112,10 @@ class AuthControllerTest extends BaseControllerTest {
         // given
         User mockUser = User.builder()
                 .id(1L)
-                .username("customer_1")
-                .email("customer@bookdelivery.com")
+                .username(CUSTOMER_1)
+                .email(CUSTOMER_EMAIL)
                 .role(Role.ROLE_CUSTOMER)
-                .fullName("customer_fullname")
+                .fullName(CUSTOMER_FULLNAME)
                 .build();
 
         CustomUserDetails userDetails = new CustomUserDetails(mockUser);
@@ -113,20 +123,20 @@ class AuthControllerTest extends BaseControllerTest {
 
         String accessToken = jwtUtils.generateJwtToken(userDetails);
 
-        String mockBearerToken = "Bearer " + accessToken;
+        String mockBearerToken = BEARER + accessToken;
 
         TokenRefreshRequest request = TokenRefreshRequest.builder()
-                .refreshToken("validRefreshToken")
+                .refreshToken(VALID_REFRESH_TOKEN)
                 .build();
 
         TokenRefreshResponse mockResponse = TokenRefreshResponse.builder()
                 .accessToken("newMockedToken")
-                .refreshToken("validRefreshToken")
+                .refreshToken(VALID_REFRESH_TOKEN)
                 .build();
 
         // when
         when(authService.refreshToken(request)).thenReturn(mockResponse);
-        when(customUserDetailsService.loadUserByUsername("customer@bookdelivery.com")).thenReturn(userDetails);
+        when(customUserDetailsService.loadUserByUsername(CUSTOMER_EMAIL)).thenReturn(userDetails);
 
         // then
         mockMvc.perform(post("/api/v1/auth/refreshtoken")
@@ -144,10 +154,10 @@ class AuthControllerTest extends BaseControllerTest {
         // Given
         User mockUser = User.builder()
                 .id(1L)
-                .username("customer_1")
-                .email("customer@bookdelivery.com")
+                .username(CUSTOMER_1)
+                .email(CUSTOMER_EMAIL)
                 .role(Role.ROLE_CUSTOMER)
-                .fullName("customer_fullname")
+                .fullName(CUSTOMER_FULLNAME)
                 .build();
 
         CustomUserDetails userDetails = new CustomUserDetails(mockUser);
@@ -155,11 +165,11 @@ class AuthControllerTest extends BaseControllerTest {
 
         String accessToken = jwtUtils.generateJwtToken(userDetails);
 
-        String mockBearerToken = "Bearer " + accessToken;
+        String mockBearerToken = BEARER + accessToken;
 
         // When
-        when(customUserDetailsService.loadUserByUsername("customer@bookdelivery.com")).thenReturn(userDetails);
-        when(authService.logout(mockBearerToken)).thenReturn("success");
+        when(customUserDetailsService.loadUserByUsername(CUSTOMER_EMAIL)).thenReturn(userDetails);
+        when(authService.logout(mockBearerToken)).thenReturn(SUCCESS);
 
         // Then
         mockMvc.perform(post("/api/v1/auth/logout")
@@ -175,7 +185,7 @@ class AuthControllerTest extends BaseControllerTest {
 
         // given
         LoginRequest request = LoginRequest.builder()
-                .email("admin@bookdelivery.com")
+                .email(ADMIN_EMAIL)
                 .password("admin_password")
                 .build();
 
@@ -203,10 +213,10 @@ class AuthControllerTest extends BaseControllerTest {
         // given
         User mockUser = User.builder()
                 .id(2L)
-                .username("admin_1")
-                .email("admin@bookdelivery.com")
+                .username(ADMIN_1)
+                .email(ADMIN_EMAIL)
                 .role(Role.ROLE_ADMIN)
-                .fullName("admin_fullname")
+                .fullName(ADMIN_FULLNAME)
                 .build();
 
         CustomUserDetails userDetails = new CustomUserDetails(mockUser);
@@ -214,20 +224,20 @@ class AuthControllerTest extends BaseControllerTest {
 
         String accessToken = jwtUtils.generateJwtToken(userDetails);
 
-        String mockBearerToken = "Bearer " + accessToken;
+        String mockBearerToken = BEARER + accessToken;
 
         TokenRefreshRequest request = TokenRefreshRequest.builder()
-                .refreshToken("validRefreshToken")
+                .refreshToken(VALID_REFRESH_TOKEN)
                 .build();
 
         TokenRefreshResponse mockResponse = TokenRefreshResponse.builder()
                 .accessToken("newMockedToken")
-                .refreshToken("validRefreshToken")
+                .refreshToken(VALID_REFRESH_TOKEN)
                 .build();
 
         // when
         when(authService.refreshToken(request)).thenReturn(mockResponse);
-        when(customUserDetailsService.loadUserByUsername("admin@bookdelivery.com")).thenReturn(userDetails);
+        when(customUserDetailsService.loadUserByUsername(ADMIN_EMAIL)).thenReturn(userDetails);
 
         // then
         mockMvc.perform(post("/api/v1/auth/refreshtoken")
@@ -245,10 +255,10 @@ class AuthControllerTest extends BaseControllerTest {
         // Given
         User mockUser = User.builder()
                 .id(2L)
-                .username("admin_1")
-                .email("admin@bookdelivery.com")
+                .username(ADMIN_1)
+                .email(ADMIN_EMAIL)
                 .role(Role.ROLE_ADMIN)
-                .fullName("admin_fullname")
+                .fullName(ADMIN_FULLNAME)
                 .build();
 
         CustomUserDetails userDetails = new CustomUserDetails(mockUser);
@@ -256,11 +266,11 @@ class AuthControllerTest extends BaseControllerTest {
 
         String accessToken = jwtUtils.generateJwtToken(userDetails);
 
-        String mockBearerToken = "Bearer " + accessToken;
+        String mockBearerToken = BEARER + accessToken;
 
         // When
-        when(customUserDetailsService.loadUserByUsername("admin@bookdelivery.com")).thenReturn(userDetails);
-        when(authService.logout(mockBearerToken)).thenReturn("success");
+        when(customUserDetailsService.loadUserByUsername(ADMIN_EMAIL)).thenReturn(userDetails);
+        when(authService.logout(mockBearerToken)).thenReturn(SUCCESS);
 
         // Then
         mockMvc.perform(post("/api/v1/auth/logout")

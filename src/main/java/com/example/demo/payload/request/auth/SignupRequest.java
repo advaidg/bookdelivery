@@ -35,6 +35,4 @@ public class SignupRequest {
     @Email
     private String email;
 
-    private Role role;
-
 }

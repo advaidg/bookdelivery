@@ -11,6 +11,9 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class CustomerMapper {
 
+    private CustomerMapper() {
+    }
+
     /**
      * Converts a {@link User} object to a {@link CustomerCreatedResponse}.
      *

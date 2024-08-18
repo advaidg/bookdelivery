@@ -46,6 +46,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 class OrderControllerTest extends BaseControllerTest {
 
+    private static final String HTTP_STATUS = "$.httpStatus";
+    private static final String IS_SUCCESS = "$.isSuccess";
+    private static final String TIME = "$.time";
+    private static final String RESPONSE_ID = "$.response.id";
+    private static final String RESPONSE_USER_ID = "$.response.user.id";
+    private static final String RESPONSE_ORDER_ITEMS_0_BOOK_ID = "$.response.orderItems[0].book.id";
+    private static final String RESPONSE_ORDER_ITEMS_1_BOOK_ID = "$.response.orderItems[1].book.id";
+    private static final String RESPONSE_CONTENT_0_ID = "$.response.content[0].id";
+    private static final String RESPONSE_CONTENT_0_USER_ID = "$.response.content[0].user.id";
+    private static final String RESPONSE_CONTENT_0_ORDER_ITEMS_0_BOOK_ID = "$.response.content[0].orderItems[0].book.id";
+    private static final String RESPONSE_CONTENT_0_ORDER_ITEMS_1_BOOK_ID = "$.response.content[0].orderItems[1].book.id";
+
     @MockBean
     private OrderService orderService;
 
@@ -104,14 +116,14 @@ class OrderControllerTest extends BaseControllerTest {
                         .content(objectMapper.writeValueAsString(createOrderRequest))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.response.id").value(orderId))
-                .andExpect(jsonPath("$.response.user.id").value(user.getId()))
-                .andExpect(jsonPath("$.response.orderItems[0].book.id").value(book1.getId()))
-                .andExpect(jsonPath("$.response.orderItems[1].book.id").value(book2.getId()))
+                .andExpect(jsonPath(RESPONSE_ID).value(orderId))
+                .andExpect(jsonPath(RESPONSE_USER_ID).value(user.getId()))
+                .andExpect(jsonPath(RESPONSE_ORDER_ITEMS_0_BOOK_ID).value(book1.getId()))
+                .andExpect(jsonPath(RESPONSE_ORDER_ITEMS_1_BOOK_ID).value(book2.getId()))
                 .andExpect(jsonPath("$.response.createdAt").isNotEmpty())
-                .andExpect(jsonPath("$.isSuccess").value(expectedCustomResponse.getIsSuccess()))
-                .andExpect(jsonPath("$.httpStatus").value(expectedCustomResponse.getHttpStatus().name()))
-                .andExpect(jsonPath("$.time").isNotEmpty());
+                .andExpect(jsonPath(IS_SUCCESS).value(expectedCustomResponse.getIsSuccess()))
+                .andExpect(jsonPath(HTTP_STATUS).value(expectedCustomResponse.getHttpStatus().name()))
+                .andExpect(jsonPath(TIME).isNotEmpty());
     }
 
     @Test
@@ -158,13 +170,13 @@ class OrderControllerTest extends BaseControllerTest {
                         .header(HttpHeaders.AUTHORIZATION, mockAdminToken)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.response.id").value(orderId))
-                .andExpect(jsonPath("$.response.user.id").value(userId))
-                .andExpect(jsonPath("$.response.orderItems[0].book.id").value(mockBook1.getId()))
-                .andExpect(jsonPath("$.response.orderItems[1].book.id").value(mockBook2.getId()))
-                .andExpect(jsonPath("$.isSuccess").value(expectedCustomResponse.getIsSuccess()))
-                .andExpect(jsonPath("$.httpStatus").value(expectedCustomResponse.getHttpStatus().getReasonPhrase()))
-                .andExpect(jsonPath("$.time").isNotEmpty());
+                .andExpect(jsonPath(RESPONSE_ID).value(orderId))
+                .andExpect(jsonPath(RESPONSE_USER_ID).value(userId))
+                .andExpect(jsonPath(RESPONSE_ORDER_ITEMS_0_BOOK_ID).value(mockBook1.getId()))
+                .andExpect(jsonPath(RESPONSE_ORDER_ITEMS_1_BOOK_ID).value(mockBook2.getId()))
+                .andExpect(jsonPath(IS_SUCCESS).value(expectedCustomResponse.getIsSuccess()))
+                .andExpect(jsonPath(HTTP_STATUS).value(expectedCustomResponse.getHttpStatus().getReasonPhrase()))
+                .andExpect(jsonPath(TIME).isNotEmpty());
     }
 
     @Test
@@ -211,13 +223,13 @@ class OrderControllerTest extends BaseControllerTest {
                         .header(HttpHeaders.AUTHORIZATION, mockUserToken)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.response.id").value(orderId))
-                .andExpect(jsonPath("$.response.user.id").value(userId))
-                .andExpect(jsonPath("$.response.orderItems[0].book.id").value(mockBook1.getId()))
-                .andExpect(jsonPath("$.response.orderItems[1].book.id").value(mockBook2.getId()))
-                .andExpect(jsonPath("$.isSuccess").value(expectedCustomResponse.getIsSuccess()))
-                .andExpect(jsonPath("$.httpStatus").value(expectedCustomResponse.getHttpStatus().getReasonPhrase()))
-                .andExpect(jsonPath("$.time").isNotEmpty());
+                .andExpect(jsonPath(RESPONSE_ID).value(orderId))
+                .andExpect(jsonPath(RESPONSE_USER_ID).value(userId))
+                .andExpect(jsonPath(RESPONSE_ORDER_ITEMS_0_BOOK_ID).value(mockBook1.getId()))
+                .andExpect(jsonPath(RESPONSE_ORDER_ITEMS_1_BOOK_ID).value(mockBook2.getId()))
+                .andExpect(jsonPath(IS_SUCCESS).value(expectedCustomResponse.getIsSuccess()))
+                .andExpect(jsonPath(HTTP_STATUS).value(expectedCustomResponse.getHttpStatus().getReasonPhrase()))
+                .andExpect(jsonPath(TIME).isNotEmpty());
     }
 
     @Test
@@ -269,13 +281,13 @@ class OrderControllerTest extends BaseControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(paginationRequest)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.response.content[0].id").value(orderId))
-                .andExpect(jsonPath("$.response.content[0].user.id").value(userId))
-                .andExpect(jsonPath("$.response.content[0].orderItems[0].book.id").value(mockBook1.getId()))
-                .andExpect(jsonPath("$.response.content[0].orderItems[1].book.id").value(mockBook2.getId()))
-                .andExpect(jsonPath("$.isSuccess").value(expectedCustomResponse.getIsSuccess()))
-                .andExpect(jsonPath("$.httpStatus").value(expectedCustomResponse.getHttpStatus().getReasonPhrase()))
-                .andExpect(jsonPath("$.time").isNotEmpty());
+                .andExpect(jsonPath(RESPONSE_CONTENT_0_ID).value(orderId))
+                .andExpect(jsonPath(RESPONSE_CONTENT_0_USER_ID).value(userId))
+                .andExpect(jsonPath(RESPONSE_CONTENT_0_ORDER_ITEMS_0_BOOK_ID).value(mockBook1.getId()))
+                .andExpect(jsonPath(RESPONSE_CONTENT_0_ORDER_ITEMS_1_BOOK_ID).value(mockBook2.getId()))
+                .andExpect(jsonPath(IS_SUCCESS).value(expectedCustomResponse.getIsSuccess()))
+                .andExpect(jsonPath(HTTP_STATUS).value(expectedCustomResponse.getHttpStatus().getReasonPhrase()))
+                .andExpect(jsonPath(TIME).isNotEmpty());
 
     }
 
@@ -328,13 +340,13 @@ class OrderControllerTest extends BaseControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(paginationRequest)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.response.content[0].id").value(orderId))
-                .andExpect(jsonPath("$.response.content[0].user.id").value(userId))
-                .andExpect(jsonPath("$.response.content[0].orderItems[0].book.id").value(mockBook1.getId()))
-                .andExpect(jsonPath("$.response.content[0].orderItems[1].book.id").value(mockBook2.getId()))
-                .andExpect(jsonPath("$.isSuccess").value(expectedCustomResponse.getIsSuccess()))
-                .andExpect(jsonPath("$.httpStatus").value(expectedCustomResponse.getHttpStatus().getReasonPhrase()))
-                .andExpect(jsonPath("$.time").isNotEmpty());
+                .andExpect(jsonPath(RESPONSE_CONTENT_0_ID).value(orderId))
+                .andExpect(jsonPath(RESPONSE_CONTENT_0_USER_ID).value(userId))
+                .andExpect(jsonPath(RESPONSE_CONTENT_0_ORDER_ITEMS_0_BOOK_ID).value(mockBook1.getId()))
+                .andExpect(jsonPath(RESPONSE_CONTENT_0_ORDER_ITEMS_1_BOOK_ID).value(mockBook2.getId()))
+                .andExpect(jsonPath(IS_SUCCESS).value(expectedCustomResponse.getIsSuccess()))
+                .andExpect(jsonPath(HTTP_STATUS).value(expectedCustomResponse.getHttpStatus().getReasonPhrase()))
+                .andExpect(jsonPath(TIME).isNotEmpty());
 
     }
 
@@ -400,13 +412,13 @@ class OrderControllerTest extends BaseControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.response.content[0].id").value(orderId))
-                .andExpect(jsonPath("$.response.content[0].user.id").value(userId))
-                .andExpect(jsonPath("$.response.content[0].orderItems[0].book.id").value(mockBook1.getId()))
-                .andExpect(jsonPath("$.response.content[0].orderItems[1].book.id").value(mockBook2.getId()))
-                .andExpect(jsonPath("$.isSuccess").value(expectedCustomResponse.getIsSuccess()))
-                .andExpect(jsonPath("$.httpStatus").value(expectedCustomResponse.getHttpStatus().getReasonPhrase()))
-                .andExpect(jsonPath("$.time").isNotEmpty());
+                .andExpect(jsonPath(RESPONSE_CONTENT_0_ID).value(orderId))
+                .andExpect(jsonPath(RESPONSE_CONTENT_0_USER_ID).value(userId))
+                .andExpect(jsonPath(RESPONSE_CONTENT_0_ORDER_ITEMS_0_BOOK_ID).value(mockBook1.getId()))
+                .andExpect(jsonPath(RESPONSE_CONTENT_0_ORDER_ITEMS_1_BOOK_ID).value(mockBook2.getId()))
+                .andExpect(jsonPath(IS_SUCCESS).value(expectedCustomResponse.getIsSuccess()))
+                .andExpect(jsonPath(HTTP_STATUS).value(expectedCustomResponse.getHttpStatus().getReasonPhrase()))
+                .andExpect(jsonPath(TIME).isNotEmpty());
     }
 
 }

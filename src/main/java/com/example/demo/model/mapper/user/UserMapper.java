@@ -10,6 +10,9 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class UserMapper {
 
+    private UserMapper() {
+    }
+
     /**
      * Converts a {@link User} object to a {@link UserDTO}.
      *

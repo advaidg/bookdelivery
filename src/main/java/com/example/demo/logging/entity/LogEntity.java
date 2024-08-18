@@ -25,21 +25,11 @@ public class LogEntity {
     @Column(columnDefinition = "TEXT")
     private String message;
 
-    private String endpoint;
-
-    private String method;
-
     @Enumerated(EnumType.STRING)
     private HttpStatus status;
 
-    private String userInfo;
-
-    private String errorType;
-
     @Column(columnDefinition = "TEXT")
     private String response;
-
-    private String operation;
 
     private LocalDateTime time;
 }

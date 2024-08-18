@@ -15,8 +15,6 @@ public class OrderReportDTO {
 
     private String month;
     private Integer year;
-    private Long totalOrderCount;
-    private Long totalBookCount;
     private BigDecimal totalPrice;
 
 }

@@ -26,7 +26,6 @@ public class OrderItemDTO {
     @AllArgsConstructor
     @EqualsAndHashCode
     public static class OrderItemBook {
-        private String id;
         private String isbn;
         private String name;
         private String authorFullName;

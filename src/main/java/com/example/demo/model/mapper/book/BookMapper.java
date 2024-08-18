@@ -18,6 +18,9 @@ import org.springframework.data.domain.Page;
 @UtilityClass
 public class BookMapper {
 
+    private BookMapper() {
+    }
+
     /**
      * Maps a {@link BookCreateRequest} to a {@link Book} entity for saving.
      *
@@ -158,3 +161,4 @@ public class BookMapper {
     }
 
 }
+

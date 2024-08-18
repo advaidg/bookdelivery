@@ -32,9 +32,7 @@ public class CustomResponse<T> {
     private T response;
 
     private Boolean isSuccess;
-
-    private HttpStatus httpStatus;
-
+    
     @Builder.Default
     private LocalDateTime time = LocalDateTime.now();
 

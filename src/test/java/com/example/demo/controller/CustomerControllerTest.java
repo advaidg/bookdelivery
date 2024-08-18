@@ -28,7 +28,7 @@ class CustomerControllerTest extends BaseControllerTest {
     private CustomerServiceImpl customerService;
 
     @Test
-    void givenValidCustomerCreateRequest_whenAdminRole_thenReturnCustomerCreatedResponse() throws Exception {
+    void createCustomer_givenValidCustomerCreateRequest_whenAdminRole_thenReturnCustomerCreatedResponse() throws Exception {
 
         // Given
         CustomerCreateRequest mockRequest = CustomerCreateRequest.builder()

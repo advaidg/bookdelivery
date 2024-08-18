@@ -12,6 +12,9 @@ import org.springframework.data.domain.Page;
 @UtilityClass
 public class OrderReportMapper {
 
+    private OrderReportMapper() {
+    }
+
     /**
      * Converts an {@link OrderReportDTO} object to an {@link OrderReportResponse}.
      *

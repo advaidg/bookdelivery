@@ -12,9 +12,4 @@ import lombok.Getter;
 @EqualsAndHashCode
 public class UserDTO {
 
-    private Long id;
-    private String fullName;
-    private String username;
-    private String email;
-
 }

@@ -9,19 +9,22 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @Testcontainers
 public abstract class AbstractTestContainerConfiguration {
 
-    static MySQLContainer<?> MYSQL_CONTAINER = new MySQLContainer<>("mysql:8.0.33");
+    private AbstractTestContainerConfiguration() {
+    }
+
+    static MySQLContainer<?> mysqlContainer = new MySQLContainer<>("mysql:8.0.33");
 
     @BeforeAll
     static void beforeAll() {
-        MYSQL_CONTAINER.withReuse(true);
-        MYSQL_CONTAINER.start();
+        mysqlContainer.withReuse(true);
+        mysqlContainer.start();
     }
 
     @DynamicPropertySource
     private static void overrideProps(DynamicPropertyRegistry dynamicPropertyRegistry) {
-        dynamicPropertyRegistry.add("spring.datasource.username", MYSQL_CONTAINER::getUsername);
-        dynamicPropertyRegistry.add("spring.datasource.password", MYSQL_CONTAINER::getPassword);
-        dynamicPropertyRegistry.add("spring.datasource.url", MYSQL_CONTAINER::getJdbcUrl);
+        dynamicPropertyRegistry.add("spring.datasource.username", mysqlContainer::getUsername);
+        dynamicPropertyRegistry.add("spring.datasource.password", mysqlContainer::getPassword);
+        dynamicPropertyRegistry.add("spring.datasource.url", mysqlContainer::getJdbcUrl);
     }
 
 }
